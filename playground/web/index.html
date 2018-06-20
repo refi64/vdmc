@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vdmc Demo</title>
+
+  <link rel="stylesheet" href="https://unpkg.com/normalize.css">
+  <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Roboto|Roboto+Mono|Material+Icons">
+
+  <script src="https://unpkg.com/vue"></script>
+  <script defer src="index.vue.dart.js"></script>
+
+  <style>
+    .row > * {
+      margin: 1em;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <m-top-app-bar>
+      <m-icon icon="menu" slot="navigation"></m-icon>
+      <span>Vdmc Demo</span>
+      <m-icon icon="file_download" slot="actions"></m-icon>
+    </m-top-app-bar>
+
+    <m-top-app-bar-fixed-adjust>
+      <div class="row">
+        <m-button>button</m-button>
+        <m-button unelevated>unelevated button</m-button>
+        <m-button raised>raised button</m-button>
+        <m-button outlined>outlined button</m-button>
+        <m-button dense>dense button</m-button>
+        <m-button href="#">link button</m-button>
+      </div>
+
+      <div>
+        <m-card primary-action>
+          <m-typo-headline :level="3">Title</m-typo-headline>
+
+          <m-typo-body :level="1">
+            Body goes here.
+          </m-typo-body>
+
+          <m-button slot="actionButtons" href="#">Action</m-button>
+        </m-card>
+      </div>
+
+      <div class="row">
+        <m-checkbox></m-checkbox>
+      </div>
+
+      <div class="row">
+        <m-chip-set>
+          <m-chip>This is a chip.</m-chip>
+          <m-chip selected>Selected.</m-chip>
+        </m-chip-set>
+      </div>
+    </m-app-top-bar-fixed-adjust>
+  </div>
+</body>
