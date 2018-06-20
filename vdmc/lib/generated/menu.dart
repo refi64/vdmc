@@ -94,8 +94,9 @@ function l(e){return(l="function"==typeof Symbol&&"symbol"==typeof Symbol.iterat
 <m-menu
   v-on="$listeners"
   :theming="theming"
-  v-bind:open="open"
-  @change="$emit('change', $event.target.open)"
+  ref="inner"
+  :open="open"
+  @change="forward('change', Array.prototype.slice.call(arguments))"
   :quickOpen="quickOpen"
   @select="$emit('select')"
   @cancel="$emit('cancel')"
@@ -104,6 +105,8 @@ function l(e){return(l="function"==typeof Symbol&&"symbol"==typeof Symbol.iterat
 </m-menu>''')
 class MMenu extends VueComponentBase with BaseMixin {
   MMenu() { _initialize(); }
+  @ref
+  dynamic inner;
   @prop
   bool open = false;
   @prop
@@ -114,9 +117,12 @@ class MMenu extends VueComponentBase with BaseMixin {
 <m-menu-anchor
   v-on="$listeners"
   :theming="theming"
+  ref="inner"
 >
   <slot v-if="$slots.default"></slot>
 </m-menu-anchor>''')
 class MMenuAnchor extends VueComponentBase with BaseMixin {
   MMenuAnchor() { _initialize(); }
+  @ref
+  dynamic inner;
 }

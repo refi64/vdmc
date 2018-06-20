@@ -109,6 +109,7 @@ void _initialize() {
 <m-fab
   v-on="$listeners"
   :theming="theming"
+  ref="inner"
   :mini="mini"
   :absoluteRight="absoluteRight"
   :excited="excited"
@@ -117,6 +118,8 @@ void _initialize() {
 </m-fab>''')
 class MFab extends VueComponentBase with BaseMixin {
   MFab() { _initialize(); }
+  @ref
+  dynamic inner;
   @prop
   bool mini = false;
   @prop

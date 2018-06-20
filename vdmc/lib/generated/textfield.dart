@@ -381,6 +381,7 @@ void _initialize() {
 <m-textfield
   v-on="$listeners"
   :theming="theming"
+  ref="inner"
   :value="value"
   :disabled="disabled"
   :upgraded="upgraded"
@@ -405,6 +406,8 @@ void _initialize() {
 </m-textfield>''')
 class MTextfield extends VueComponentBase with BaseMixin {
   MTextfield() { _initialize(); }
+  @ref
+  dynamic inner;
   @prop
   String value = '';
   @prop
@@ -429,6 +432,7 @@ class MTextfield extends VueComponentBase with BaseMixin {
 <m-textfield-helptext
   v-on="$listeners"
   :theming="theming"
+  ref="inner"
   :persistent="persistent"
   :validationMsg="validationMsg"
 >
@@ -436,6 +440,8 @@ class MTextfield extends VueComponentBase with BaseMixin {
 </m-textfield-helptext>''')
 class MTextfieldHelptext extends VueComponentBase with BaseMixin {
   MTextfieldHelptext() { _initialize(); }
+  @ref
+  dynamic inner;
   @prop
   bool persistent = false;
   @prop

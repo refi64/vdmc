@@ -157,12 +157,15 @@ void _initialize() {
 <m-form-field
   v-on="$listeners"
   :theming="theming"
+  ref="inner"
   :alignEnd="alignEnd"
 >
   <slot v-if="$slots.default"></slot>
 </m-form-field>''')
 class MFormField extends VueComponentBase with BaseMixin {
   MFormField() { _initialize(); }
+  @ref
+  dynamic inner;
   @prop
   bool alignEnd = false;
 }

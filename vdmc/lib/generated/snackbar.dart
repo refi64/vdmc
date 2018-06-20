@@ -68,6 +68,8 @@ class SnackbarOptions {
 </m-snackbar>''')
 class MSnackbar extends VueComponentBase with BaseMixin {
   MSnackbar() { _initialize(); }
+  @ref
+  dynamic inner;
   @prop
   bool alignStart = false;
   @prop

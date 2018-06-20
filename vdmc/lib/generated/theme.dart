@@ -19,6 +19,8 @@ void _initialize() {
 </m-theme>''')
 class MTheme extends VueComponentBase with BaseMixin {
   MTheme() { _initialize(); }
+  @ref
+  dynamic inner;
   @prop
   Map<String, String> customStyle;
   @computed

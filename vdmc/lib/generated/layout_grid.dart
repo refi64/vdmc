@@ -13,6 +13,7 @@ void _initialize() {
 <m-layout-grid
   v-on="$listeners"
   :theming="theming"
+  ref="inner"
   :fixedColumWidth="fixedColumWidth"
   :align="align"
 >
@@ -20,6 +21,8 @@ void _initialize() {
 </m-layout-grid>''')
 class MLayoutGrid extends VueComponentBase with BaseMixin {
   MLayoutGrid() { _initialize(); }
+  @ref
+  dynamic inner;
   @prop
   bool fixedColumWidth = false;
   @prop
@@ -30,6 +33,7 @@ class MLayoutGrid extends VueComponentBase with BaseMixin {
 <m-layout-grid-cell
   v-on="$listeners"
   :theming="theming"
+  ref="inner"
   :span="span"
   :spanDesktop="spanDesktop"
   :spanTablet="spanTablet"
@@ -41,6 +45,8 @@ class MLayoutGrid extends VueComponentBase with BaseMixin {
 </m-layout-grid-cell>''')
 class MLayoutGridCell extends VueComponentBase with BaseMixin {
   MLayoutGridCell() { _initialize(); }
+  @ref
+  dynamic inner;
   @prop
   num span;
   @prop
@@ -59,9 +65,12 @@ class MLayoutGridCell extends VueComponentBase with BaseMixin {
 <m-layout-grid-inner
   v-on="$listeners"
   :theming="theming"
+  ref="inner"
 >
   <slot v-if="$slots.default"></slot>
 </m-layout-grid-inner>''')
 class MLayoutGridInner extends VueComponentBase with BaseMixin {
   MLayoutGridInner() { _initialize(); }
+  @ref
+  dynamic inner;
 }

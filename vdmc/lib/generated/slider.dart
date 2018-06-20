@@ -93,6 +93,7 @@ void _initialize() {
 <m-slider
   v-on="$listeners"
   :theming="theming"
+  ref="inner"
   :label="label"
   :displayMarkers="displayMarkers"
   :discrete="discrete"
@@ -105,6 +106,8 @@ void _initialize() {
 </m-slider>''')
 class MSlider extends VueComponentBase with BaseMixin {
   MSlider() { _initialize(); }
+  @ref
+  dynamic inner;
   @prop
   String label;
   @prop

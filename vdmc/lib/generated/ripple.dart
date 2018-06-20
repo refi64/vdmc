@@ -109,6 +109,7 @@ void _initialize() {
 <m-ripple
   v-on="$listeners"
   :theming="theming"
+  ref="inner"
   :unbounded="unbounded"
   :accent="accent"
 >
@@ -116,6 +117,8 @@ void _initialize() {
 </m-ripple>''')
 class MRipple extends VueComponentBase with BaseMixin {
   MRipple() { _initialize(); }
+  @ref
+  dynamic inner;
   @prop
   bool unbounded = false;
   @prop

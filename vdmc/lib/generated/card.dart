@@ -109,6 +109,7 @@ void _initialize() {
 <m-card
   v-on="$listeners"
   :theming="theming"
+  ref="inner"
   :outlined="outlined"
   :fullBleedAction="fullBleedAction"
   :primaryAction="primaryAction"
@@ -126,6 +127,8 @@ void _initialize() {
 </m-card>''')
 class MCard extends VueComponentBase with BaseMixin {
   MCard() { _initialize(); }
+  @ref
+  dynamic inner;
   @prop
   bool outlined = false;
   @prop

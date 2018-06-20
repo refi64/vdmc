@@ -13,6 +13,7 @@ void _initialize() {
 <m-shape
   v-on="$listeners"
   :theming="theming"
+  ref="inner"
   :topLeft="topLeft"
   :topRight="topRight"
   :bottomRight="bottomRight"
@@ -22,6 +23,8 @@ void _initialize() {
 </m-shape>''')
 class MShape extends VueComponentBase with BaseMixin {
   MShape() { _initialize(); }
+  @ref
+  dynamic inner;
   @prop
   bool topLeft = false;
   @prop

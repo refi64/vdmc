@@ -206,6 +206,7 @@ var r=n(4),o=n(6),i={FIXED_CLASS:"mdc-top-app-bar--fixed",FIXED_SCROLLED_CLASS:"
 <m-top-app-bar
   v-on="$listeners"
   :theming="theming"
+  ref="inner"
   :collapsed="collapsed"
   :short="short"
   :prominent="prominent"
@@ -223,6 +224,8 @@ var r=n(4),o=n(6),i={FIXED_CLASS:"mdc-top-app-bar--fixed",FIXED_SCROLLED_CLASS:"
 </m-top-app-bar>''')
 class MTopAppBar extends VueComponentBase with BaseMixin {
   MTopAppBar() { _initialize(); }
+  @ref
+  dynamic inner;
   @prop
   bool collapsed = false;
   @prop
@@ -239,6 +242,7 @@ class MTopAppBar extends VueComponentBase with BaseMixin {
 <m-top-app-bar-fixed-adjust
   v-on="$listeners"
   :theming="theming"
+  ref="inner"
   :dense="dense"
   :short="short"
   :prominent="prominent"
@@ -248,6 +252,8 @@ class MTopAppBar extends VueComponentBase with BaseMixin {
 </m-top-app-bar-fixed-adjust>''')
 class MTopAppBarFixedAdjust extends VueComponentBase with BaseMixin {
   MTopAppBarFixedAdjust() { _initialize(); }
+  @ref
+  dynamic inner;
   @prop
   bool dense = false;
   @prop

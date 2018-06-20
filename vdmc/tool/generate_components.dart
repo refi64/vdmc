@@ -353,7 +353,7 @@ final modules = {
     Component(
       name: 'list-item',
       props: [
-        // BoolProp('activated'),
+        BoolProp('activated'),
         BoolProp('selected'),
       ],
       slots: ['graphic', 'text', 'secondaryText', 'meta'],
@@ -620,7 +620,7 @@ class SnackbarOptions {
   ],
 };
 
-final URL = 'https://unpkg.com/material-components-vue/dist';
+final URL = 'https://unpkg.com/material-components-vue@0.23.5/dist';
 
 String pascalCase(String str) =>
   str.split('-').map((p) => p[0].toUpperCase() + p.substring(1)).join('');
@@ -628,6 +628,12 @@ String pascalCase(String str) =>
 void main(List<String> args) async {
   var script = Platform.script.toFilePath();
   var generatedDirectory = p.join(p.dirname(p.dirname(script)), 'lib', 'generated');
+
+  var debug = false;
+  if (args.isNotEmpty && args[0] == 'debug') {
+    debug = true;
+    args = args.sublist(1);
+  }
 
   var all = new File(p.join(generatedDirectory, 'all.dart')).openWrite();
 
@@ -647,7 +653,8 @@ void main(List<String> args) async {
     output.writeln("import '../component.vue.dart';");
     output.writeln();
 
-    var js = (await http.get('$URL/$module/$module.min.js')).body;
+    var jsFile = debug ? 'index.js' : '$module.min.js';
+    var js = (await http.get('$URL/$module/$jsFile')).body;
     var css = (await http.get('$URL/$module/$module.min.css')).body;
 
     output.writeln('bool _initialized = false;');

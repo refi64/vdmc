@@ -45,6 +45,7 @@ void _initialize() {
 <m-linear-progress
   v-on="$listeners"
   :theming="theming"
+  ref="inner"
   :open="open"
   :indeterminate="indeterminate"
   :reverse="reverse"
@@ -54,6 +55,8 @@ void _initialize() {
 </m-linear-progress>''')
 class MLinearProgress extends VueComponentBase with BaseMixin {
   MLinearProgress() { _initialize(); }
+  @ref
+  dynamic inner;
   @prop
   bool open = false;
   @prop

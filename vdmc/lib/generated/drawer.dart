@@ -45,6 +45,7 @@ void _initialize() {
 <m-drawer-permanent
   v-on="$listeners"
   :theming="theming"
+  ref="inner"
 >
   <slot v-if="$slots.default"></slot>
   <template v-if="$slots.toolbarSpacer" slot="toolbarSpacer">
@@ -53,14 +54,17 @@ void _initialize() {
 </m-drawer-permanent>''')
 class MDrawerPermanent extends VueComponentBase with BaseMixin {
   MDrawerPermanent() { _initialize(); }
+  @ref
+  dynamic inner;
 }
 
 @VueComponent(mixins: const [BaseMixin], template: r'''
 <m-drawer-persistent
   v-on="$listeners"
   :theming="theming"
-  v-bind:open="open"
-  @change="$emit('change', $event.target.open)"
+  ref="inner"
+  :open="open"
+  @change="forward('change', Array.prototype.slice.call(arguments))"
 >
   <slot v-if="$slots.default"></slot>
   <template v-if="$slots.toolbarSpacer" slot="toolbarSpacer">
@@ -72,6 +76,8 @@ class MDrawerPermanent extends VueComponentBase with BaseMixin {
 </m-drawer-persistent>''')
 class MDrawerPersistent extends VueComponentBase with BaseMixin {
   MDrawerPersistent() { _initialize(); }
+  @ref
+  dynamic inner;
   @prop
   bool open = true;
 }
@@ -80,8 +86,9 @@ class MDrawerPersistent extends VueComponentBase with BaseMixin {
 <m-drawer-temporary
   v-on="$listeners"
   :theming="theming"
-  v-bind:open="open"
-  @change="$emit('change', $event.target.open)"
+  ref="inner"
+  :open="open"
+  @change="forward('change', Array.prototype.slice.call(arguments))"
 >
   <slot v-if="$slots.default"></slot>
   <template v-if="$slots.toolbarSpacer" slot="toolbarSpacer">
@@ -93,6 +100,8 @@ class MDrawerPersistent extends VueComponentBase with BaseMixin {
 </m-drawer-temporary>''')
 class MDrawerTemporary extends VueComponentBase with BaseMixin {
   MDrawerTemporary() { _initialize(); }
+  @ref
+  dynamic inner;
   @prop
   bool open = false;
 }
@@ -101,31 +110,40 @@ class MDrawerTemporary extends VueComponentBase with BaseMixin {
 <m-drawer-content
   v-on="$listeners"
   :theming="theming"
+  ref="inner"
 >
   <slot v-if="$slots.default"></slot>
 </m-drawer-content>''')
 class MDrawerContent extends VueComponentBase with BaseMixin {
   MDrawerContent() { _initialize(); }
+  @ref
+  dynamic inner;
 }
 
 @VueComponent(mixins: const [BaseMixin], template: r'''
 <m-drawer-header
   v-on="$listeners"
   :theming="theming"
+  ref="inner"
 >
   <slot v-if="$slots.default"></slot>
 </m-drawer-header>''')
 class MDrawerHeader extends VueComponentBase with BaseMixin {
   MDrawerHeader() { _initialize(); }
+  @ref
+  dynamic inner;
 }
 
 @VueComponent(mixins: const [BaseMixin], template: r'''
 <m-drawer-toolbar-spacer
   v-on="$listeners"
   :theming="theming"
+  ref="inner"
 >
   <slot v-if="$slots.default"></slot>
 </m-drawer-toolbar-spacer>''')
 class MDrawerToolbarSpacer extends VueComponentBase with BaseMixin {
   MDrawerToolbarSpacer() { _initialize(); }
+  @ref
+  dynamic inner;
 }

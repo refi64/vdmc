@@ -13,23 +13,29 @@ void _initialize() {
 <m-typography
   v-on="$listeners"
   :theming="theming"
+  ref="inner"
 >
   <slot v-if="$slots.default"></slot>
 </m-typography>''')
 class MTypography extends VueComponentBase with BaseMixin {
   MTypography() { _initialize(); }
+  @ref
+  dynamic inner;
 }
 
 @VueComponent(mixins: const [BaseMixin], template: r'''
 <m-typo-body
   v-on="$listeners"
   :theming="theming"
+  ref="inner"
   :level="level"
 >
   <slot v-if="$slots.default"></slot>
 </m-typo-body>''')
 class MTypoBody extends VueComponentBase with BaseMixin {
   MTypoBody() { _initialize(); }
+  @ref
+  dynamic inner;
   @prop
   num level;
 }
@@ -38,34 +44,43 @@ class MTypoBody extends VueComponentBase with BaseMixin {
 <m-typo-button
   v-on="$listeners"
   :theming="theming"
+  ref="inner"
 >
   <slot v-if="$slots.default"></slot>
 </m-typo-button>''')
 class MTypoButton extends VueComponentBase with BaseMixin {
   MTypoButton() { _initialize(); }
+  @ref
+  dynamic inner;
 }
 
 @VueComponent(mixins: const [BaseMixin], template: r'''
 <m-typo-caption
   v-on="$listeners"
   :theming="theming"
+  ref="inner"
 >
   <slot v-if="$slots.default"></slot>
 </m-typo-caption>''')
 class MTypoCaption extends VueComponentBase with BaseMixin {
   MTypoCaption() { _initialize(); }
+  @ref
+  dynamic inner;
 }
 
 @VueComponent(mixins: const [BaseMixin], template: r'''
 <m-typo-headline
   v-on="$listeners"
   :theming="theming"
+  ref="inner"
   :level="level"
 >
   <slot v-if="$slots.default"></slot>
 </m-typo-headline>''')
 class MTypoHeadline extends VueComponentBase with BaseMixin {
   MTypoHeadline() { _initialize(); }
+  @ref
+  dynamic inner;
   @prop
   num level;
 }
@@ -74,23 +89,29 @@ class MTypoHeadline extends VueComponentBase with BaseMixin {
 <m-typo-overline
   v-on="$listeners"
   :theming="theming"
+  ref="inner"
 >
   <slot v-if="$slots.default"></slot>
 </m-typo-overline>''')
 class MTypoOverline extends VueComponentBase with BaseMixin {
   MTypoOverline() { _initialize(); }
+  @ref
+  dynamic inner;
 }
 
 @VueComponent(mixins: const [BaseMixin], template: r'''
 <m-typo-subheading
   v-on="$listeners"
   :theming="theming"
+  ref="inner"
   :level="level"
 >
   <slot v-if="$slots.default"></slot>
 </m-typo-subheading>''')
 class MTypoSubheading extends VueComponentBase with BaseMixin {
   MTypoSubheading() { _initialize(); }
+  @ref
+  dynamic inner;
   @prop
   num level;
 }

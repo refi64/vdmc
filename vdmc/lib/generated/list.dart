@@ -109,6 +109,7 @@ void _initialize() {
 <m-list
   v-on="$listeners"
   :theming="theming"
+  ref="inner"
   :avatar="avatar"
   :dense="dense"
   :twoLine="twoLine"
@@ -118,6 +119,8 @@ void _initialize() {
 </m-list>''')
 class MList extends VueComponentBase with BaseMixin {
   MList() { _initialize(); }
+  @ref
+  dynamic inner;
   @prop
   bool avatar = false;
   @prop
@@ -132,12 +135,15 @@ class MList extends VueComponentBase with BaseMixin {
 <m-list-divider
   v-on="$listeners"
   :theming="theming"
+  ref="inner"
   :inset="inset"
   :padded="padded"
 >
 </m-list-divider>''')
 class MListDivider extends VueComponentBase with BaseMixin {
   MListDivider() { _initialize(); }
+  @ref
+  dynamic inner;
   @prop
   bool inset = false;
   @prop
@@ -148,38 +154,49 @@ class MListDivider extends VueComponentBase with BaseMixin {
 <m-list-group
   v-on="$listeners"
   :theming="theming"
+  ref="inner"
 >
   <slot v-if="$slots.default"></slot>
 </m-list-group>''')
 class MListGroup extends VueComponentBase with BaseMixin {
   MListGroup() { _initialize(); }
+  @ref
+  dynamic inner;
 }
 
 @VueComponent(mixins: const [BaseMixin], template: r'''
 <m-list-group-divider
   v-on="$listeners"
   :theming="theming"
+  ref="inner"
 >
 </m-list-group-divider>''')
 class MListGroupDivider extends VueComponentBase with BaseMixin {
   MListGroupDivider() { _initialize(); }
+  @ref
+  dynamic inner;
 }
 
 @VueComponent(mixins: const [BaseMixin], template: r'''
 <m-list-group-subheader
   v-on="$listeners"
   :theming="theming"
+  ref="inner"
 >
   <slot v-if="$slots.default"></slot>
 </m-list-group-subheader>''')
 class MListGroupSubheader extends VueComponentBase with BaseMixin {
   MListGroupSubheader() { _initialize(); }
+  @ref
+  dynamic inner;
 }
 
 @VueComponent(mixins: const [BaseMixin], template: r'''
 <m-list-item
   v-on="$listeners"
   :theming="theming"
+  ref="inner"
+  :activated="activated"
   :selected="selected"
 >
   <slot v-if="$slots.default"></slot>
@@ -198,6 +215,10 @@ class MListGroupSubheader extends VueComponentBase with BaseMixin {
 </m-list-item>''')
 class MListItem extends VueComponentBase with BaseMixin {
   MListItem() { _initialize(); }
+  @ref
+  dynamic inner;
+  @prop
+  bool activated = false;
   @prop
   bool selected = false;
 }

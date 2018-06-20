@@ -109,9 +109,10 @@ void _initialize() {
 <m-dialog
   v-on="$listeners"
   :theming="theming"
+  ref="inner"
   :scrollable="scrollable"
-  v-bind:open="open"
-  @change="$emit('change', $event.target.open)"
+  :open="open"
+  @change="forward('change', Array.prototype.slice.call(arguments))"
   @accept="$emit('accept')"
   @cancel="$emit('cancel')"
 >
@@ -133,6 +134,8 @@ void _initialize() {
 </m-dialog>''')
 class MDialog extends VueComponentBase with BaseMixin {
   MDialog() { _initialize(); }
+  @ref
+  dynamic inner;
   @prop
   bool scrollable = false;
   @prop

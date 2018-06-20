@@ -157,8 +157,9 @@ void _initialize() {
 <m-radio
   v-on="$listeners"
   :theming="theming"
-  v-bind:checked="checked"
-  @change="$emit('change', $event.target.checked)"
+  ref="inner"
+  :checked="checked"
+  @change="forward('change', Array.prototype.slice.call(arguments))"
   :disabled="disabled"
   :value="value"
   :name="name"
@@ -166,6 +167,8 @@ void _initialize() {
 </m-radio>''')
 class MRadio extends VueComponentBase with BaseMixin {
   MRadio() { _initialize(); }
+  @ref
+  dynamic inner;
   @prop
   bool checked = false;
   @prop

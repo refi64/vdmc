@@ -157,14 +157,15 @@ void _initialize() {
 <m-icon-button
   v-on="$listeners"
   :theming="theming"
+  ref="inner"
   :toggleOnContent="toggleOnContent"
   :toggleOnLabel="toggleOnLabel"
   :toggleOnClass="toggleOnClass"
   :toggleOffContent="toggleOffContent"
   :toggleOffLabel="toggleOffLabel"
   :toggleOffClass="toggleOffClass"
-  v-bind:value="value"
-  @change="$emit('change', $event.target.value)"
+  :value="value"
+  @change="forward('change', Array.prototype.slice.call(arguments))"
 >
   <slot v-if="$slots.default"></slot>
   <template v-if="$slots.toggleOn" slot="toggleOn">
@@ -176,6 +177,8 @@ void _initialize() {
 </m-icon-button>''')
 class MIconButton extends VueComponentBase with BaseMixin {
   MIconButton() { _initialize(); }
+  @ref
+  dynamic inner;
   @prop
   String toggleOnContent = '';
   @prop

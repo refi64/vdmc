@@ -205,14 +205,17 @@ void _initialize() {
 <m-chip
   v-on="$listeners"
   :theming="theming"
-  v-bind:selected="selected"
-  @change="$emit('change', $event.target.selected)"
+  ref="inner"
+  :selected="selected"
+  @change="forward('change', Array.prototype.slice.call(arguments))"
   @remove="$emit('remove')"
 >
   <slot v-if="$slots.default"></slot>
 </m-chip>''')
 class MChip extends VueComponentBase with BaseMixin {
   MChip() { _initialize(); }
+  @ref
+  dynamic inner;
   @prop
   bool selected = false;
 }
@@ -221,6 +224,7 @@ class MChip extends VueComponentBase with BaseMixin {
 <m-chip-set
   v-on="$listeners"
   :theming="theming"
+  ref="inner"
   :choice="choice"
   :filter="filter"
   :input="input"
@@ -229,6 +233,8 @@ class MChip extends VueComponentBase with BaseMixin {
 </m-chip-set>''')
 class MChipSet extends VueComponentBase with BaseMixin {
   MChipSet() { _initialize(); }
+  @ref
+  dynamic inner;
   @prop
   bool choice = false;
   @prop

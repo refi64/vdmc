@@ -109,6 +109,7 @@ void _initialize() {
 <m-tab
   v-on="$listeners"
   :theming="theming"
+  ref="inner"
   :active="active"
   :label="label"
 >
@@ -119,6 +120,8 @@ void _initialize() {
 </m-tab>''')
 class MTab extends VueComponentBase with BaseMixin {
   MTab() { _initialize(); }
+  @ref
+  dynamic inner;
   @prop
   bool active = false;
   @prop
@@ -129,6 +132,7 @@ class MTab extends VueComponentBase with BaseMixin {
 <m-tab-bar
   v-on="$listeners"
   :theming="theming"
+  ref="inner"
   :scrollable="scrollable"
   :iconTabBar="iconTabBar"
   :withIconAndText="withIconAndText"
@@ -137,6 +141,8 @@ class MTab extends VueComponentBase with BaseMixin {
 </m-tab-bar>''')
 class MTabBar extends VueComponentBase with BaseMixin {
   MTabBar() { _initialize(); }
+  @ref
+  dynamic inner;
   @prop
   bool scrollable = false;
   @prop

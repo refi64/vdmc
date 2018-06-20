@@ -13,6 +13,7 @@ void _initialize() {
 <m-elevation
   v-on="$listeners"
   :theming="theming"
+  ref="inner"
   :level="level"
   :transition="transition"
 >
@@ -20,6 +21,8 @@ void _initialize() {
 </m-elevation>''')
 class MElevation extends VueComponentBase with BaseMixin {
   MElevation() { _initialize(); }
+  @ref
+  dynamic inner;
   @prop
   num level;
   @prop

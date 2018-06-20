@@ -93,6 +93,7 @@ void _initialize() {
 <m-float-above
   v-on="$listeners"
   :theming="theming"
+  ref="inner"
   :floatAbove="floatAbove"
   :shake="shake"
 >
@@ -100,6 +101,8 @@ void _initialize() {
 </m-float-above>''')
 class MFloatAbove extends VueComponentBase with BaseMixin {
   MFloatAbove() { _initialize(); }
+  @ref
+  dynamic inner;
   @prop
   bool floatAbove = false;
   @prop

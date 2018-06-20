@@ -109,6 +109,7 @@ void _initialize() {
 <m-button
   v-on="$listeners"
   :theming="theming"
+  ref="inner"
   :raised="raised"
   :unelevated="unelevated"
   :outlined="outlined"
@@ -122,6 +123,8 @@ void _initialize() {
 </m-button>''')
 class MButton extends VueComponentBase with BaseMixin {
   MButton() { _initialize(); }
+  @ref
+  dynamic inner;
   @prop
   bool raised = false;
   @prop

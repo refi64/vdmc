@@ -13,13 +13,16 @@ void _initialize() {
 <m-switch
   v-on="$listeners"
   :theming="theming"
-  v-bind:checked="checked"
-  @change="$emit('change', $event.target.checked)"
+  ref="inner"
+  :checked="checked"
+  @change="forward('change', Array.prototype.slice.call(arguments))"
   :disabled="disabled"
 >
 </m-switch>''')
 class MSwitch extends VueComponentBase with BaseMixin {
   MSwitch() { _initialize(); }
+  @ref
+  dynamic inner;
   @prop
   bool checked = false;
   @prop

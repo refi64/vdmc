@@ -13,11 +13,14 @@ void _initialize() {
 <m-notched-outline
   v-on="$listeners"
   :theming="theming"
+  ref="inner"
   :notched="notched"
 >
 </m-notched-outline>''')
 class MNotchedOutline extends VueComponentBase with BaseMixin {
   MNotchedOutline() { _initialize(); }
+  @ref
+  dynamic inner;
   @prop
   bool notched = false;
 }

@@ -12,6 +12,7 @@ void _initialize() {
 <m-image-list
   v-on="$listeners"
   :theming="theming"
+  ref="inner"
   :standardColumn="standardColumn"
   :masonryColumn="masonryColumn"
   :textProtection="textProtection"
@@ -20,6 +21,8 @@ void _initialize() {
 </m-image-list>''')
 class MImageList extends VueComponentBase with BaseMixin {
   MImageList() { _initialize(); }
+  @ref
+  dynamic inner;
   @prop
   num standardColumn;
   @prop
@@ -32,6 +35,7 @@ class MImageList extends VueComponentBase with BaseMixin {
 <m-image-list-item
   v-on="$listeners"
   :theming="theming"
+  ref="inner"
   :adjustAspectRatio="adjustAspectRatio"
 >
   <slot v-if="$slots.default"></slot>
@@ -41,6 +45,8 @@ class MImageList extends VueComponentBase with BaseMixin {
 </m-image-list-item>''')
 class MImageListItem extends VueComponentBase with BaseMixin {
   MImageListItem() { _initialize(); }
+  @ref
+  dynamic inner;
   @prop
   bool adjustAspectRatio = true;
 }

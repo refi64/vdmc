@@ -12,11 +12,14 @@ void _initialize() {
 <m-icon
   v-on="$listeners"
   :theming="theming"
+  ref="inner"
   :icon="icon"
 >
 </m-icon>''')
 class MIcon extends VueComponentBase with BaseMixin {
   MIcon() { _initialize(); }
+  @ref
+  dynamic inner;
   @prop
   String icon;
 }
