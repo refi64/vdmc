@@ -46,7 +46,7 @@ void loadStyle(String style) {
   if (_styleElement == null) {
     _styleElement = new StyleElement();
     _styleElement.appendText('/* vdmc injected styles */\n\n');
-    document.head.append(_styleElement);
+    document.head.insertBefore(_styleElement, document.head.childNodes[0]);
   }
 
   _styleElement.appendText(style);

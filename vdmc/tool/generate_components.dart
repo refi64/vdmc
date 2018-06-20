@@ -622,8 +622,8 @@ class SnackbarOptions {
 
 final URL = 'https://unpkg.com/material-components-vue@0.23.5/dist';
 
-String pascalCase(String str) =>
-  str.split('-').map((p) => p[0].toUpperCase() + p.substring(1)).join('');
+String className(String str) =>
+  'M' + str.split('-').map((p) => p[0].toUpperCase() + p.substring(1)).join('');
 
 void main(List<String> args) async {
   var script = Platform.script.toFilePath();
@@ -636,10 +636,13 @@ void main(List<String> args) async {
   }
 
   var all = new File(p.join(generatedDirectory, 'all.dart')).openWrite();
+  all.writeln("import 'package:vue/vue.dart';");
+  all.writeln();
 
   for (var module in modules.keys) {
     var snakeCase = module.replaceAll('-', '_');
 
+    all.writeln("import '$snakeCase.vue.dart';");
     all.writeln("export '$snakeCase.vue.dart';");
 
     if (args.isNotEmpty && !args.contains(module)) {
@@ -669,7 +672,7 @@ void main(List<String> args) async {
 
     for (var component in modules[module]) {
       var name = component.name;
-      var cls = 'M${pascalCase(name)}';
+      var cls = className(name);
       print('  | $name');
 
       output.writeln();
@@ -759,6 +762,16 @@ void main(List<String> args) async {
 
     output.close();
   }
+
+  all.writeln();
+  all.writeln('@VueMixin(components: const [');
+  for (var module in modules.keys) {
+    for (var component in modules[module]) {
+      all.writeln('  ${className(component.name)},');
+    }
+  }
+  all.writeln('])');
+  all.writeln('abstract class MComponentsMixin {}');
 
   all.close();
 }
