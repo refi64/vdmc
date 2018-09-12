@@ -1,5 +1,5 @@
 import 'package:vue/vue.dart';
-import '../component.vue.dart';
+import '../component.template.dart';
 
 bool _initialized = false;
 void _initialize() {
@@ -105,7 +105,7 @@ void _initialize() {
   _initialized = true;
 }
 
-@VueComponent(mixins: const [BaseMixin], template: r'''
+@VueComponent(template: r'''
 <m-fab
   v-on="$listeners"
   :theming="theming"
@@ -118,6 +118,9 @@ void _initialize() {
 </m-fab>''')
 class MFab extends VueComponentBase with BaseMixin {
   MFab() { _initialize(); }
+  @override
+  void lifecycleCreated() {
+  }
   @ref
   dynamic inner;
   @prop

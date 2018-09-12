@@ -1,5 +1,5 @@
 import 'package:vue/vue.dart';
-import '../component.vue.dart';
+import '../component.template.dart';
 
 bool _initialized = false;
 void _initialize() {
@@ -202,7 +202,7 @@ var r=n(4),o=n(6),i={FIXED_CLASS:"mdc-top-app-bar--fixed",FIXED_SCROLLED_CLASS:"
   _initialized = true;
 }
 
-@VueComponent(mixins: const [BaseMixin], template: r'''
+@VueComponent(template: r'''
 <m-top-app-bar
   v-on="$listeners"
   :theming="theming"
@@ -212,7 +212,7 @@ var r=n(4),o=n(6),i={FIXED_CLASS:"mdc-top-app-bar--fixed",FIXED_SCROLLED_CLASS:"
   :prominent="prominent"
   :dense="dense"
   :fixed="fixed"
-  @onNavigation="$emit('onNavigation')"
+  @onNavigation="_onNavigationEmit(null)"
 >
   <slot v-if="$slots.default"></slot>
   <template v-if="$slots.navigation" slot="navigation">
@@ -223,7 +223,15 @@ var r=n(4),o=n(6),i={FIXED_CLASS:"mdc-top-app-bar--fixed",FIXED_SCROLLED_CLASS:"
   </template>
 </m-top-app-bar>''')
 class MTopAppBar extends VueComponentBase with BaseMixin {
+  static final onNavigation = VueEventSpec<void>('onNavigation');
+  VueEventSink<void> onNavigationSink;
+  VueEventStream<void> onNavigationStream;
   MTopAppBar() { _initialize(); }
+  @override
+  void lifecycleCreated() {
+    onNavigationSink = MTopAppBar.onNavigation.createSink(this);
+    onNavigationStream = MTopAppBar.onNavigation.createStream(this);
+  }
   @ref
   dynamic inner;
   @prop
@@ -236,9 +244,11 @@ class MTopAppBar extends VueComponentBase with BaseMixin {
   bool dense = false;
   @prop
   bool fixed = false;
+  @method
+  _onNavigationEmit() => onNavigationSink.add(null);
 }
 
-@VueComponent(mixins: const [BaseMixin], template: r'''
+@VueComponent(template: r'''
 <m-top-app-bar-fixed-adjust
   v-on="$listeners"
   :theming="theming"
@@ -252,6 +262,9 @@ class MTopAppBar extends VueComponentBase with BaseMixin {
 </m-top-app-bar-fixed-adjust>''')
 class MTopAppBarFixedAdjust extends VueComponentBase with BaseMixin {
   MTopAppBarFixedAdjust() { _initialize(); }
+  @override
+  void lifecycleCreated() {
+  }
   @ref
   dynamic inner;
   @prop

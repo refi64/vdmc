@@ -6,10 +6,12 @@ dependencies:
   vdmc: any
   vue: ^0.4.0
 dependency_overrides:
+  scopify:
+    path: /code/scopify
   vdmc:
-    path: ../vdmc
+    path: /code/vdmc/vdmc
   vue:
-    path: ../../vuedart/vue
+    path: /code/vuedart/vue
 dev_dependencies:
   build_runner: any
   build_web_compilers: any

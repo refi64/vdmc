@@ -1,5 +1,5 @@
 import 'package:vue/vue.dart';
-import '../component.vue.dart';
+import '../component.template.dart';
 
 bool _initialized = false;
 void _initialize() {
@@ -105,7 +105,7 @@ void _initialize() {
   _initialized = true;
 }
 
-@VueComponent(mixins: const [BaseMixin], template: r'''
+@VueComponent(template: r'''
 <m-tab
   v-on="$listeners"
   :theming="theming"
@@ -120,6 +120,9 @@ void _initialize() {
 </m-tab>''')
 class MTab extends VueComponentBase with BaseMixin {
   MTab() { _initialize(); }
+  @override
+  void lifecycleCreated() {
+  }
   @ref
   dynamic inner;
   @prop
@@ -128,7 +131,7 @@ class MTab extends VueComponentBase with BaseMixin {
   bool label = true;
 }
 
-@VueComponent(mixins: const [BaseMixin], template: r'''
+@VueComponent(template: r'''
 <m-tab-bar
   v-on="$listeners"
   :theming="theming"
@@ -141,6 +144,9 @@ class MTab extends VueComponentBase with BaseMixin {
 </m-tab-bar>''')
 class MTabBar extends VueComponentBase with BaseMixin {
   MTabBar() { _initialize(); }
+  @override
+  void lifecycleCreated() {
+  }
   @ref
   dynamic inner;
   @prop

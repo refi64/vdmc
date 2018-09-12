@@ -1,5 +1,5 @@
 import 'package:vue/vue.dart';
-import '../component.vue.dart';
+import '../component.template.dart';
 
 bool _initialized = false;
 void _initialize() {
@@ -9,7 +9,7 @@ void _initialize() {
   _initialized = true;
 }
 
-@VueComponent(mixins: const [BaseMixin], template: r'''
+@VueComponent(template: r'''
 <m-typography
   v-on="$listeners"
   :theming="theming"
@@ -19,11 +19,14 @@ void _initialize() {
 </m-typography>''')
 class MTypography extends VueComponentBase with BaseMixin {
   MTypography() { _initialize(); }
+  @override
+  void lifecycleCreated() {
+  }
   @ref
   dynamic inner;
 }
 
-@VueComponent(mixins: const [BaseMixin], template: r'''
+@VueComponent(template: r'''
 <m-typo-body
   v-on="$listeners"
   :theming="theming"
@@ -34,13 +37,16 @@ class MTypography extends VueComponentBase with BaseMixin {
 </m-typo-body>''')
 class MTypoBody extends VueComponentBase with BaseMixin {
   MTypoBody() { _initialize(); }
+  @override
+  void lifecycleCreated() {
+  }
   @ref
   dynamic inner;
   @prop
   num level;
 }
 
-@VueComponent(mixins: const [BaseMixin], template: r'''
+@VueComponent(template: r'''
 <m-typo-button
   v-on="$listeners"
   :theming="theming"
@@ -50,11 +56,14 @@ class MTypoBody extends VueComponentBase with BaseMixin {
 </m-typo-button>''')
 class MTypoButton extends VueComponentBase with BaseMixin {
   MTypoButton() { _initialize(); }
+  @override
+  void lifecycleCreated() {
+  }
   @ref
   dynamic inner;
 }
 
-@VueComponent(mixins: const [BaseMixin], template: r'''
+@VueComponent(template: r'''
 <m-typo-caption
   v-on="$listeners"
   :theming="theming"
@@ -64,11 +73,14 @@ class MTypoButton extends VueComponentBase with BaseMixin {
 </m-typo-caption>''')
 class MTypoCaption extends VueComponentBase with BaseMixin {
   MTypoCaption() { _initialize(); }
+  @override
+  void lifecycleCreated() {
+  }
   @ref
   dynamic inner;
 }
 
-@VueComponent(mixins: const [BaseMixin], template: r'''
+@VueComponent(template: r'''
 <m-typo-headline
   v-on="$listeners"
   :theming="theming"
@@ -79,13 +91,16 @@ class MTypoCaption extends VueComponentBase with BaseMixin {
 </m-typo-headline>''')
 class MTypoHeadline extends VueComponentBase with BaseMixin {
   MTypoHeadline() { _initialize(); }
+  @override
+  void lifecycleCreated() {
+  }
   @ref
   dynamic inner;
   @prop
   num level;
 }
 
-@VueComponent(mixins: const [BaseMixin], template: r'''
+@VueComponent(template: r'''
 <m-typo-overline
   v-on="$listeners"
   :theming="theming"
@@ -95,11 +110,14 @@ class MTypoHeadline extends VueComponentBase with BaseMixin {
 </m-typo-overline>''')
 class MTypoOverline extends VueComponentBase with BaseMixin {
   MTypoOverline() { _initialize(); }
+  @override
+  void lifecycleCreated() {
+  }
   @ref
   dynamic inner;
 }
 
-@VueComponent(mixins: const [BaseMixin], template: r'''
+@VueComponent(template: r'''
 <m-typo-subheading
   v-on="$listeners"
   :theming="theming"
@@ -110,6 +128,9 @@ class MTypoOverline extends VueComponentBase with BaseMixin {
 </m-typo-subheading>''')
 class MTypoSubheading extends VueComponentBase with BaseMixin {
   MTypoSubheading() { _initialize(); }
+  @override
+  void lifecycleCreated() {
+  }
   @ref
   dynamic inner;
   @prop

@@ -1,5 +1,5 @@
 import 'package:vue/vue.dart';
-import '../component.vue.dart';
+import '../component.template.dart';
 
 bool _initialized = false;
 void _initialize() {
@@ -105,7 +105,7 @@ void _initialize() {
   _initialized = true;
 }
 
-@VueComponent(mixins: const [BaseMixin], template: r'''
+@VueComponent(template: r'''
 <m-list
   v-on="$listeners"
   :theming="theming"
@@ -119,6 +119,9 @@ void _initialize() {
 </m-list>''')
 class MList extends VueComponentBase with BaseMixin {
   MList() { _initialize(); }
+  @override
+  void lifecycleCreated() {
+  }
   @ref
   dynamic inner;
   @prop
@@ -131,7 +134,7 @@ class MList extends VueComponentBase with BaseMixin {
   bool nonInteractive = false;
 }
 
-@VueComponent(mixins: const [BaseMixin], template: r'''
+@VueComponent(template: r'''
 <m-list-divider
   v-on="$listeners"
   :theming="theming"
@@ -142,6 +145,9 @@ class MList extends VueComponentBase with BaseMixin {
 </m-list-divider>''')
 class MListDivider extends VueComponentBase with BaseMixin {
   MListDivider() { _initialize(); }
+  @override
+  void lifecycleCreated() {
+  }
   @ref
   dynamic inner;
   @prop
@@ -150,7 +156,7 @@ class MListDivider extends VueComponentBase with BaseMixin {
   bool padded = false;
 }
 
-@VueComponent(mixins: const [BaseMixin], template: r'''
+@VueComponent(template: r'''
 <m-list-group
   v-on="$listeners"
   :theming="theming"
@@ -160,11 +166,14 @@ class MListDivider extends VueComponentBase with BaseMixin {
 </m-list-group>''')
 class MListGroup extends VueComponentBase with BaseMixin {
   MListGroup() { _initialize(); }
+  @override
+  void lifecycleCreated() {
+  }
   @ref
   dynamic inner;
 }
 
-@VueComponent(mixins: const [BaseMixin], template: r'''
+@VueComponent(template: r'''
 <m-list-group-divider
   v-on="$listeners"
   :theming="theming"
@@ -173,11 +182,14 @@ class MListGroup extends VueComponentBase with BaseMixin {
 </m-list-group-divider>''')
 class MListGroupDivider extends VueComponentBase with BaseMixin {
   MListGroupDivider() { _initialize(); }
+  @override
+  void lifecycleCreated() {
+  }
   @ref
   dynamic inner;
 }
 
-@VueComponent(mixins: const [BaseMixin], template: r'''
+@VueComponent(template: r'''
 <m-list-group-subheader
   v-on="$listeners"
   :theming="theming"
@@ -187,11 +199,14 @@ class MListGroupDivider extends VueComponentBase with BaseMixin {
 </m-list-group-subheader>''')
 class MListGroupSubheader extends VueComponentBase with BaseMixin {
   MListGroupSubheader() { _initialize(); }
+  @override
+  void lifecycleCreated() {
+  }
   @ref
   dynamic inner;
 }
 
-@VueComponent(mixins: const [BaseMixin], template: r'''
+@VueComponent(template: r'''
 <m-list-item
   v-on="$listeners"
   :theming="theming"
@@ -215,6 +230,9 @@ class MListGroupSubheader extends VueComponentBase with BaseMixin {
 </m-list-item>''')
 class MListItem extends VueComponentBase with BaseMixin {
   MListItem() { _initialize(); }
+  @override
+  void lifecycleCreated() {
+  }
   @ref
   dynamic inner;
   @prop

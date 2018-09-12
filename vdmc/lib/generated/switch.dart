@@ -1,5 +1,5 @@
 import 'package:vue/vue.dart';
-import '../component.vue.dart';
+import '../component.template.dart';
 
 bool _initialized = false;
 void _initialize() {
@@ -9,22 +9,34 @@ void _initialize() {
   _initialized = true;
 }
 
-@VueComponent(mixins: const [BaseMixin], template: r'''
+@VueComponent(template: r'''
 <m-switch
   v-on="$listeners"
   :theming="theming"
   ref="inner"
-  :checked="checked"
-  @change="forward('change', Array.prototype.slice.call(arguments))"
+  v-model="_checkedModel"
   :disabled="disabled"
 >
 </m-switch>''')
 class MSwitch extends VueComponentBase with BaseMixin {
+  static final change = VueEventSpec<bool>('change');
+  VueEventSink<bool> changeSink;
+  VueEventStream<bool> changeStream;
   MSwitch() { _initialize(); }
+  @override
+  void lifecycleCreated() {
+    changeSink = MSwitch.change.createSink(this);
+    changeStream = MSwitch.change.createStream(this);
+  }
   @ref
   dynamic inner;
+  @model(event: 'change')
   @prop
   bool checked = false;
   @prop
   bool disabled = false;
+  @computed
+  get _checkedModel => checked;
+  @computed
+  set _checkedModel(value) => changeSink.add(value);
 }

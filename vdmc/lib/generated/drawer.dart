@@ -1,5 +1,5 @@
 import 'package:vue/vue.dart';
-import '../component.vue.dart';
+import '../component.template.dart';
 
 bool _initialized = false;
 void _initialize() {
@@ -41,7 +41,7 @@ void _initialize() {
   _initialized = true;
 }
 
-@VueComponent(mixins: const [BaseMixin], template: r'''
+@VueComponent(template: r'''
 <m-drawer-permanent
   v-on="$listeners"
   :theming="theming"
@@ -54,17 +54,19 @@ void _initialize() {
 </m-drawer-permanent>''')
 class MDrawerPermanent extends VueComponentBase with BaseMixin {
   MDrawerPermanent() { _initialize(); }
+  @override
+  void lifecycleCreated() {
+  }
   @ref
   dynamic inner;
 }
 
-@VueComponent(mixins: const [BaseMixin], template: r'''
+@VueComponent(template: r'''
 <m-drawer-persistent
   v-on="$listeners"
   :theming="theming"
   ref="inner"
-  :open="open"
-  @change="forward('change', Array.prototype.slice.call(arguments))"
+  v-model="_openModel"
 >
   <slot v-if="$slots.default"></slot>
   <template v-if="$slots.toolbarSpacer" slot="toolbarSpacer">
@@ -75,20 +77,32 @@ class MDrawerPermanent extends VueComponentBase with BaseMixin {
   </template>
 </m-drawer-persistent>''')
 class MDrawerPersistent extends VueComponentBase with BaseMixin {
+  static final change = VueEventSpec<bool>('change');
+  VueEventSink<bool> changeSink;
+  VueEventStream<bool> changeStream;
   MDrawerPersistent() { _initialize(); }
+  @override
+  void lifecycleCreated() {
+    changeSink = MDrawerPersistent.change.createSink(this);
+    changeStream = MDrawerPersistent.change.createStream(this);
+  }
   @ref
   dynamic inner;
+  @model(event: 'change')
   @prop
   bool open = true;
+  @computed
+  get _openModel => open;
+  @computed
+  set _openModel(value) => changeSink.add(value);
 }
 
-@VueComponent(mixins: const [BaseMixin], template: r'''
+@VueComponent(template: r'''
 <m-drawer-temporary
   v-on="$listeners"
   :theming="theming"
   ref="inner"
-  :open="open"
-  @change="forward('change', Array.prototype.slice.call(arguments))"
+  v-model="_openModel"
 >
   <slot v-if="$slots.default"></slot>
   <template v-if="$slots.toolbarSpacer" slot="toolbarSpacer">
@@ -99,14 +113,27 @@ class MDrawerPersistent extends VueComponentBase with BaseMixin {
   </template>
 </m-drawer-temporary>''')
 class MDrawerTemporary extends VueComponentBase with BaseMixin {
+  static final change = VueEventSpec<bool>('change');
+  VueEventSink<bool> changeSink;
+  VueEventStream<bool> changeStream;
   MDrawerTemporary() { _initialize(); }
+  @override
+  void lifecycleCreated() {
+    changeSink = MDrawerTemporary.change.createSink(this);
+    changeStream = MDrawerTemporary.change.createStream(this);
+  }
   @ref
   dynamic inner;
+  @model(event: 'change')
   @prop
   bool open = false;
+  @computed
+  get _openModel => open;
+  @computed
+  set _openModel(value) => changeSink.add(value);
 }
 
-@VueComponent(mixins: const [BaseMixin], template: r'''
+@VueComponent(template: r'''
 <m-drawer-content
   v-on="$listeners"
   :theming="theming"
@@ -116,11 +143,14 @@ class MDrawerTemporary extends VueComponentBase with BaseMixin {
 </m-drawer-content>''')
 class MDrawerContent extends VueComponentBase with BaseMixin {
   MDrawerContent() { _initialize(); }
+  @override
+  void lifecycleCreated() {
+  }
   @ref
   dynamic inner;
 }
 
-@VueComponent(mixins: const [BaseMixin], template: r'''
+@VueComponent(template: r'''
 <m-drawer-header
   v-on="$listeners"
   :theming="theming"
@@ -130,11 +160,14 @@ class MDrawerContent extends VueComponentBase with BaseMixin {
 </m-drawer-header>''')
 class MDrawerHeader extends VueComponentBase with BaseMixin {
   MDrawerHeader() { _initialize(); }
+  @override
+  void lifecycleCreated() {
+  }
   @ref
   dynamic inner;
 }
 
-@VueComponent(mixins: const [BaseMixin], template: r'''
+@VueComponent(template: r'''
 <m-drawer-toolbar-spacer
   v-on="$listeners"
   :theming="theming"
@@ -144,6 +177,9 @@ class MDrawerHeader extends VueComponentBase with BaseMixin {
 </m-drawer-toolbar-spacer>''')
 class MDrawerToolbarSpacer extends VueComponentBase with BaseMixin {
   MDrawerToolbarSpacer() { _initialize(); }
+  @override
+  void lifecycleCreated() {
+  }
   @ref
   dynamic inner;
 }

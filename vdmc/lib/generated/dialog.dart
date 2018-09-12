@@ -1,5 +1,5 @@
 import 'package:vue/vue.dart';
-import '../component.vue.dart';
+import '../component.template.dart';
 
 bool _initialized = false;
 void _initialize() {
@@ -105,16 +105,15 @@ void _initialize() {
   _initialized = true;
 }
 
-@VueComponent(mixins: const [BaseMixin], template: r'''
+@VueComponent(template: r'''
 <m-dialog
   v-on="$listeners"
   :theming="theming"
   ref="inner"
   :scrollable="scrollable"
-  :open="open"
-  @change="forward('change', Array.prototype.slice.call(arguments))"
-  @accept="$emit('accept')"
-  @cancel="$emit('cancel')"
+  v-model="_openModel"
+  @accept="_acceptEmit(null)"
+  @cancel="_cancelEmit(null)"
 >
   <template v-if="$slots.header" slot="header">
     <slot name="header"></slot>
@@ -133,11 +132,38 @@ void _initialize() {
   </template>
 </m-dialog>''')
 class MDialog extends VueComponentBase with BaseMixin {
+  static final accept = VueEventSpec<void>('accept');
+  VueEventSink<void> acceptSink;
+  VueEventStream<void> acceptStream;
+  static final cancel = VueEventSpec<void>('cancel');
+  VueEventSink<void> cancelSink;
+  VueEventStream<void> cancelStream;
+  static final change = VueEventSpec<bool>('change');
+  VueEventSink<bool> changeSink;
+  VueEventStream<bool> changeStream;
   MDialog() { _initialize(); }
+  @override
+  void lifecycleCreated() {
+    acceptSink = MDialog.accept.createSink(this);
+    acceptStream = MDialog.accept.createStream(this);
+    cancelSink = MDialog.cancel.createSink(this);
+    cancelStream = MDialog.cancel.createStream(this);
+    changeSink = MDialog.change.createSink(this);
+    changeStream = MDialog.change.createStream(this);
+  }
   @ref
   dynamic inner;
   @prop
   bool scrollable = false;
+  @model(event: 'change')
   @prop
   bool open = false;
+  @computed
+  get _openModel => open;
+  @computed
+  set _openModel(value) => changeSink.add(value);
+  @method
+  _acceptEmit() => acceptSink.add(null);
+  @method
+  _cancelEmit() => cancelSink.add(null);
 }

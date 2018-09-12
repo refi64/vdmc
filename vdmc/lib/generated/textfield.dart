@@ -1,5 +1,5 @@
 import 'package:vue/vue.dart';
-import '../component.vue.dart';
+import '../component.template.dart';
 
 bool _initialized = false;
 void _initialize() {
@@ -377,7 +377,7 @@ void _initialize() {
   _initialized = true;
 }
 
-@VueComponent(mixins: const [BaseMixin], template: r'''
+@VueComponent(template: r'''
 <m-textfield
   v-on="$listeners"
   :theming="theming"
@@ -391,7 +391,7 @@ void _initialize() {
   :dense="dense"
   :focused="focused"
   :textarea="textarea"
-  @input="$emit('input')"
+  @input="_inputEmit(arguments[0])"
 >
   <slot v-if="$slots.default"></slot>
   <template v-if="$slots.leadingIcon" slot="leadingIcon">
@@ -405,7 +405,15 @@ void _initialize() {
   </template>
 </m-textfield>''')
 class MTextfield extends VueComponentBase with BaseMixin {
+  static final input = VueEventSpec<String>('input');
+  VueEventSink<String> inputSink;
+  VueEventStream<String> inputStream;
   MTextfield() { _initialize(); }
+  @override
+  void lifecycleCreated() {
+    inputSink = MTextfield.input.createSink(this);
+    inputStream = MTextfield.input.createStream(this);
+  }
   @ref
   dynamic inner;
   @prop
@@ -426,9 +434,11 @@ class MTextfield extends VueComponentBase with BaseMixin {
   bool focused = false;
   @prop
   bool textarea = false;
+  @method
+  _inputEmit(arg) => inputSink.add(arg);
 }
 
-@VueComponent(mixins: const [BaseMixin], template: r'''
+@VueComponent(template: r'''
 <m-textfield-helptext
   v-on="$listeners"
   :theming="theming"
@@ -440,6 +450,9 @@ class MTextfield extends VueComponentBase with BaseMixin {
 </m-textfield-helptext>''')
 class MTextfieldHelptext extends VueComponentBase with BaseMixin {
   MTextfieldHelptext() { _initialize(); }
+  @override
+  void lifecycleCreated() {
+  }
   @ref
   dynamic inner;
   @prop

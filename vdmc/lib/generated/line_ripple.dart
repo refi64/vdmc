@@ -1,5 +1,5 @@
 import 'package:vue/vue.dart';
-import '../component.vue.dart';
+import '../component.template.dart';
 
 bool _initialized = false;
 void _initialize() {
@@ -89,7 +89,7 @@ void _initialize() {
   _initialized = true;
 }
 
-@VueComponent(mixins: const [BaseMixin], template: r'''
+@VueComponent(template: r'''
 <m-line-ripple
   v-on="$listeners"
   :theming="theming"
@@ -98,6 +98,9 @@ void _initialize() {
 </m-line-ripple>''')
 class MLineRipple extends VueComponentBase with BaseMixin {
   MLineRipple() { _initialize(); }
+  @override
+  void lifecycleCreated() {
+  }
   @ref
   dynamic inner;
   @method

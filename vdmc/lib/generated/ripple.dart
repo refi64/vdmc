@@ -1,5 +1,5 @@
 import 'package:vue/vue.dart';
-import '../component.vue.dart';
+import '../component.template.dart';
 
 bool _initialized = false;
 void _initialize() {
@@ -105,7 +105,7 @@ void _initialize() {
   _initialized = true;
 }
 
-@VueComponent(mixins: const [BaseMixin], template: r'''
+@VueComponent(template: r'''
 <m-ripple
   v-on="$listeners"
   :theming="theming"
@@ -117,6 +117,9 @@ void _initialize() {
 </m-ripple>''')
 class MRipple extends VueComponentBase with BaseMixin {
   MRipple() { _initialize(); }
+  @override
+  void lifecycleCreated() {
+  }
   @ref
   dynamic inner;
   @prop

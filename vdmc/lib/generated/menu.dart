@@ -1,5 +1,6 @@
 import 'package:vue/vue.dart';
-import '../component.vue.dart';
+import '../component.template.dart';
+import 'dart:html';
 
 bool _initialized = false;
 void _initialize() {
@@ -90,30 +91,63 @@ function l(e){return(l="function"==typeof Symbol&&"symbol"==typeof Symbol.iterat
   _initialized = true;
 }
 
-@VueComponent(mixins: const [BaseMixin], template: r'''
+class SelectedDetail {
+  Element item;
+  num index;
+
+  SelectedDetail({this.item, this.index});
+}
+      
+@VueComponent(template: r'''
 <m-menu
   v-on="$listeners"
   :theming="theming"
   ref="inner"
-  :open="open"
-  @change="forward('change', Array.prototype.slice.call(arguments))"
+  v-model="_openModel"
   :quickOpen="quickOpen"
-  @select="$emit('select')"
-  @cancel="$emit('cancel')"
+  @select="_selectEmit(arguments[0])"
+  @cancel="_cancelEmit(null)"
 >
   <slot v-if="$slots.default"></slot>
 </m-menu>''')
 class MMenu extends VueComponentBase with BaseMixin {
+  static final select = VueEventSpec<SelectedDetail>('select');
+  VueEventSink<SelectedDetail> selectSink;
+  VueEventStream<SelectedDetail> selectStream;
+  static final cancel = VueEventSpec<void>('cancel');
+  VueEventSink<void> cancelSink;
+  VueEventStream<void> cancelStream;
+  static final change = VueEventSpec<bool>('change');
+  VueEventSink<bool> changeSink;
+  VueEventStream<bool> changeStream;
   MMenu() { _initialize(); }
+  @override
+  void lifecycleCreated() {
+    selectSink = MMenu.select.createSink(this);
+    selectStream = MMenu.select.createStream(this);
+    cancelSink = MMenu.cancel.createSink(this);
+    cancelStream = MMenu.cancel.createStream(this);
+    changeSink = MMenu.change.createSink(this);
+    changeStream = MMenu.change.createStream(this);
+  }
   @ref
   dynamic inner;
+  @model(event: 'change')
   @prop
   bool open = false;
   @prop
   bool quickOpen = false;
+  @computed
+  get _openModel => open;
+  @computed
+  set _openModel(value) => changeSink.add(value);
+  @method
+  _selectEmit(arg) => selectSink.add(arg);
+  @method
+  _cancelEmit() => cancelSink.add(null);
 }
 
-@VueComponent(mixins: const [BaseMixin], template: r'''
+@VueComponent(template: r'''
 <m-menu-anchor
   v-on="$listeners"
   :theming="theming"
@@ -123,6 +157,9 @@ class MMenu extends VueComponentBase with BaseMixin {
 </m-menu-anchor>''')
 class MMenuAnchor extends VueComponentBase with BaseMixin {
   MMenuAnchor() { _initialize(); }
+  @override
+  void lifecycleCreated() {
+  }
   @ref
   dynamic inner;
 }

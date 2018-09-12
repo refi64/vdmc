@@ -1,1 +1,1 @@
-export 'generated/all.vue.dart';
+export 'generated/all.template.dart';

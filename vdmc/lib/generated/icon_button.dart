@@ -1,5 +1,5 @@
 import 'package:vue/vue.dart';
-import '../component.vue.dart';
+import '../component.template.dart';
 
 bool _initialized = false;
 void _initialize() {
@@ -153,7 +153,7 @@ void _initialize() {
   _initialized = true;
 }
 
-@VueComponent(mixins: const [BaseMixin], template: r'''
+@VueComponent(template: r'''
 <m-icon-button
   v-on="$listeners"
   :theming="theming"
@@ -164,8 +164,7 @@ void _initialize() {
   :toggleOffContent="toggleOffContent"
   :toggleOffLabel="toggleOffLabel"
   :toggleOffClass="toggleOffClass"
-  :value="value"
-  @change="forward('change', Array.prototype.slice.call(arguments))"
+  v-model="_valueModel"
 >
   <slot v-if="$slots.default"></slot>
   <template v-if="$slots.toggleOn" slot="toggleOn">
@@ -176,7 +175,15 @@ void _initialize() {
   </template>
 </m-icon-button>''')
 class MIconButton extends VueComponentBase with BaseMixin {
+  static final change = VueEventSpec<bool>('change');
+  VueEventSink<bool> changeSink;
+  VueEventStream<bool> changeStream;
   MIconButton() { _initialize(); }
+  @override
+  void lifecycleCreated() {
+    changeSink = MIconButton.change.createSink(this);
+    changeStream = MIconButton.change.createStream(this);
+  }
   @ref
   dynamic inner;
   @prop
@@ -191,6 +198,11 @@ class MIconButton extends VueComponentBase with BaseMixin {
   String toggleOffLabel = '';
   @prop
   String toggleOffClass = '';
+  @model(event: 'change')
   @prop
   bool value = false;
+  @computed
+  get _valueModel => value;
+  @computed
+  set _valueModel(value) => changeSink.add(value);
 }

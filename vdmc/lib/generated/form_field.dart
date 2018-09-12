@@ -1,5 +1,5 @@
 import 'package:vue/vue.dart';
-import '../component.vue.dart';
+import '../component.template.dart';
 
 bool _initialized = false;
 void _initialize() {
@@ -153,7 +153,7 @@ void _initialize() {
   _initialized = true;
 }
 
-@VueComponent(mixins: const [BaseMixin], template: r'''
+@VueComponent(template: r'''
 <m-form-field
   v-on="$listeners"
   :theming="theming"
@@ -164,6 +164,9 @@ void _initialize() {
 </m-form-field>''')
 class MFormField extends VueComponentBase with BaseMixin {
   MFormField() { _initialize(); }
+  @override
+  void lifecycleCreated() {
+  }
   @ref
   dynamic inner;
   @prop

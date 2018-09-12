@@ -1,5 +1,5 @@
 import 'package:vue/vue.dart';
-import '../component.vue.dart';
+import '../component.template.dart';
 
 bool _initialized = false;
 void _initialize() {
@@ -9,7 +9,7 @@ void _initialize() {
   _initialized = true;
 }
 
-@VueComponent(mixins: const [BaseMixin], template: r'''
+@VueComponent(template: r'''
 <m-notched-outline
   v-on="$listeners"
   :theming="theming"
@@ -19,6 +19,9 @@ void _initialize() {
 </m-notched-outline>''')
 class MNotchedOutline extends VueComponentBase with BaseMixin {
   MNotchedOutline() { _initialize(); }
+  @override
+  void lifecycleCreated() {
+  }
   @ref
   dynamic inner;
   @prop

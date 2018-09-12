@@ -3,7 +3,7 @@ import 'package:vue/vue.dart';
 import 'package:vdmc/vdmc.dart';
 
 @VueApp(el: '#app', components: const [MButton, MCard, MCheckbox, MChip, MChipSet,
-                                       MIcon, MTopAppBar, MTypoBody, MTypoHeadline])
+                                       MIcon, MSwitch, MTopAppBar, MTypoBody, MTypoHeadline])
 class App extends VueAppBase {
 }
 

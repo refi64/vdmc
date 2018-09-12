@@ -11,14 +11,9 @@ export 'package:js/js.dart';
 export 'package:js/js_util.dart';
 
 @VueMixin()
-abstract class BaseMixin {
-  void $emit(String event, [List args]);
-
+abstract class BaseMixin implements VueMixinRequirements {
   @prop
   String theming = '';
-
-  @method
-  void forward(String event, List args) => $emit(event, args);
 }
 
 @JS('window')

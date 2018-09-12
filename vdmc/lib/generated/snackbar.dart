@@ -1,5 +1,5 @@
 import 'package:vue/vue.dart';
-import '../component.vue.dart';
+import '../component.template.dart';
 
 bool _initialized = false;
 void _initialize() {
@@ -55,7 +55,7 @@ class SnackbarOptions {
                    this.multiline, this.actionOnBottom});
 }
 
-@VueComponent(mixins: const [BaseMixin], template: r'''
+@VueComponent(template: r'''
 <m-snackbar
   v-on="$listeners"
   :theming="theming"
@@ -68,6 +68,9 @@ class SnackbarOptions {
 </m-snackbar>''')
 class MSnackbar extends VueComponentBase with BaseMixin {
   MSnackbar() { _initialize(); }
+  @override
+  void lifecycleCreated() {
+  }
   @ref
   dynamic inner;
   @prop

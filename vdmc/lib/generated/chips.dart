@@ -1,5 +1,5 @@
 import 'package:vue/vue.dart';
-import '../component.vue.dart';
+import '../component.template.dart';
 
 bool _initialized = false;
 void _initialize() {
@@ -201,26 +201,45 @@ void _initialize() {
   _initialized = true;
 }
 
-@VueComponent(mixins: const [BaseMixin], template: r'''
+@VueComponent(template: r'''
 <m-chip
   v-on="$listeners"
   :theming="theming"
   ref="inner"
-  :selected="selected"
-  @change="forward('change', Array.prototype.slice.call(arguments))"
-  @remove="$emit('remove')"
+  v-model="_selectedModel"
+  @remove="_removeEmit(null)"
 >
   <slot v-if="$slots.default"></slot>
 </m-chip>''')
 class MChip extends VueComponentBase with BaseMixin {
+  static final remove = VueEventSpec<void>('remove');
+  VueEventSink<void> removeSink;
+  VueEventStream<void> removeStream;
+  static final change = VueEventSpec<bool>('change');
+  VueEventSink<bool> changeSink;
+  VueEventStream<bool> changeStream;
   MChip() { _initialize(); }
+  @override
+  void lifecycleCreated() {
+    removeSink = MChip.remove.createSink(this);
+    removeStream = MChip.remove.createStream(this);
+    changeSink = MChip.change.createSink(this);
+    changeStream = MChip.change.createStream(this);
+  }
   @ref
   dynamic inner;
+  @model(event: 'change')
   @prop
   bool selected = false;
+  @computed
+  get _selectedModel => selected;
+  @computed
+  set _selectedModel(value) => changeSink.add(value);
+  @method
+  _removeEmit() => removeSink.add(null);
 }
 
-@VueComponent(mixins: const [BaseMixin], template: r'''
+@VueComponent(template: r'''
 <m-chip-set
   v-on="$listeners"
   :theming="theming"
@@ -233,6 +252,9 @@ class MChip extends VueComponentBase with BaseMixin {
 </m-chip-set>''')
 class MChipSet extends VueComponentBase with BaseMixin {
   MChipSet() { _initialize(); }
+  @override
+  void lifecycleCreated() {
+  }
   @ref
   dynamic inner;
   @prop

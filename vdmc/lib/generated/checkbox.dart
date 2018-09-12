@@ -1,5 +1,5 @@
 import 'package:vue/vue.dart';
-import '../component.vue.dart';
+import '../component.template.dart';
 
 bool _initialized = false;
 void _initialize() {
@@ -153,22 +153,34 @@ void _initialize() {
   _initialized = true;
 }
 
-@VueComponent(mixins: const [BaseMixin], template: r'''
+@VueComponent(template: r'''
 <m-checkbox
   v-on="$listeners"
   :theming="theming"
   ref="inner"
-  :checked="checked"
-  @change="forward('change', Array.prototype.slice.call(arguments))"
+  v-model="_checkedModel"
   :indeterminate="indeterminate"
 >
 </m-checkbox>''')
 class MCheckbox extends VueComponentBase with BaseMixin {
+  static final change = VueEventSpec<bool>('change');
+  VueEventSink<bool> changeSink;
+  VueEventStream<bool> changeStream;
   MCheckbox() { _initialize(); }
+  @override
+  void lifecycleCreated() {
+    changeSink = MCheckbox.change.createSink(this);
+    changeStream = MCheckbox.change.createStream(this);
+  }
   @ref
   dynamic inner;
+  @model(event: 'change')
   @prop
   bool checked = false;
   @prop
   bool indeterminate = false;
+  @computed
+  get _checkedModel => checked;
+  @computed
+  set _checkedModel(value) => changeSink.add(value);
 }

@@ -1,5 +1,5 @@
 import 'package:vue/vue.dart';
-import '../component.vue.dart';
+import '../component.template.dart';
 
 bool _initialized = false;
 void _initialize() {
@@ -9,7 +9,7 @@ void _initialize() {
   _initialized = true;
 }
 
-@VueComponent(mixins: const [BaseMixin], template: r'''
+@VueComponent(template: r'''
 <m-elevation
   v-on="$listeners"
   :theming="theming"
@@ -21,6 +21,9 @@ void _initialize() {
 </m-elevation>''')
 class MElevation extends VueComponentBase with BaseMixin {
   MElevation() { _initialize(); }
+  @override
+  void lifecycleCreated() {
+  }
   @ref
   dynamic inner;
   @prop

@@ -42,6 +42,12 @@ class Redirect {
   Redirect(this.name, this.type, this.code);
 }
 
+class Event {
+  String name, type, convert;
+
+  Event(this.name, {this.type, this.convert});
+}
+
 class Method {
   String name;
   String returns;
@@ -58,18 +64,19 @@ class Model {
 
 class Component {
   String name;
+  List<String> imports;
   String code;
   List<Prop> props;
   List<Redirect> redirects;
   Model model;
-  List<String> events;
+  List<Event> events;
   List<Method> methods;
   bool slot;
   List<String> slots;
 
-  Component({this.name, this.code = '', this.redirects = const [], this.props = const [],
-             this.model, this.events = const [], this.methods = const [], this.slot,
-             this.slots = const []});
+  Component({this.name, this.imports = const [], this.code = '', this.redirects = const [],
+             this.props = const [], this.model, this.events = const [],
+             this.methods = const [], this.slot, this.slots = const []});
 }
 
 final modules = {
@@ -83,7 +90,6 @@ final modules = {
         BoolProp('dense'),
         StringProp('href'),
       ],
-      model: Model(prop: 'checked', event: 'change'),
       slots: ['icon'],
     )
   ],
@@ -100,6 +106,17 @@ final modules = {
     ),
   ],
 
+  'checkbox': [
+    Component(
+      name: 'checkbox',
+      props: [
+        BoolProp('checked'),
+        BoolProp('indeterminate'),
+      ],
+      model: Model(prop: 'checked'),
+    ),
+  ],
+
   'chips': [
     Component(
       name: 'chip',
@@ -107,7 +124,9 @@ final modules = {
         BoolProp('selected'),
       ],
       model: Model(prop: 'selected'),
-      events: ['remove'],
+      events: [
+        Event('remove'),
+      ],
       slot: true,
     ),
     Component(
@@ -121,17 +140,6 @@ final modules = {
     ),
   ],
 
-  'checkbox': [
-    Component(
-      name: 'checkbox',
-      props: [
-        BoolProp('checked'),
-        BoolProp('indeterminate'),
-      ],
-      model: Model(prop: 'checked'),
-    ),
-  ],
-
   'dialog': [
     Component(
       name: 'dialog',
@@ -140,7 +148,10 @@ final modules = {
         BoolProp('open'),
       ],
       model: Model(prop: 'open'),
-      events: ['accept', 'cancel'],
+      events: [
+        Event('accept'),
+        Event('cancel'),
+      ],
       slot: false,
       slots: ['header', 'body', 'acceptButton', 'cancelButton', 'dialogButton'],
     ),
@@ -363,12 +374,27 @@ final modules = {
   'menu': [
     Component(
       name: 'menu',
+      imports: ['dart:html'],
+      code: r'''
+class SelectedDetail {
+  Element item;
+  num index;
+
+  SelectedDetail({this.item, this.index});
+}
+      ''',
       props: [
         BoolProp('open'),
         BoolProp('quickOpen'),
       ],
       model: Model(prop: 'open'),
-      events: ['select', 'cancel'],
+      events: [
+        Event('select', type: 'SelectedDetail',
+              convert: r'''
+  new SelectedDetail(getProperty(arg, 'item'), getProperty(arg, 'index'))
+              '''),
+        Event('cancel'),
+      ],
       slot: true,
     ),
     Component(
@@ -532,7 +558,9 @@ class SnackbarOptions {
         BoolProp('focused'),
         BoolProp('textarea'),
       ],
-      events: ['input'],
+      events: [
+        Event('input', type: 'String'),
+      ],
       slots: ['leadingIcon', 'trailingIcon', 'bottomLine'],
     ),
     Component(
@@ -564,7 +592,9 @@ class SnackbarOptions {
         BoolProp('dense'),
         BoolProp('fixed'),
       ],
-      events: ['onNavigation'],
+      events: [
+        Event('onNavigation'),
+      ],
       slots: ['navigation', 'actions'],
     ),
     Component(
@@ -642,8 +672,8 @@ void main(List<String> args) async {
   for (var module in modules.keys) {
     var snakeCase = module.replaceAll('-', '_');
 
-    all.writeln("import '$snakeCase.vue.dart';");
-    all.writeln("export '$snakeCase.vue.dart';");
+    all.writeln("import '$snakeCase.template.dart';");
+    all.writeln("export '$snakeCase.template.dart';");
 
     if (args.isNotEmpty && !args.contains(module)) {
       continue;
@@ -653,7 +683,14 @@ void main(List<String> args) async {
     print('$module:');
 
     output.writeln("import 'package:vue/vue.dart';");
-    output.writeln("import '../component.vue.dart';");
+    output.writeln("import '../component.template.dart';");
+
+    for (var component in modules[module]) {
+      for (var imp in component.imports) {
+        output.writeln("import '$imp';");
+      }
+    }
+
     output.writeln();
 
     var jsFile = debug ? 'index.js' : '$module.min.js';
@@ -681,7 +718,7 @@ void main(List<String> args) async {
         output.writeln(component.code);
       }
 
-      output.writeln("@VueComponent(mixins: const [BaseMixin], template: r'''");
+      output.writeln("@VueComponent(template: r'''");
       output.writeln('<m-$name');
       output.writeln('  v-on="\$listeners"');
       output.writeln('  :theming="theming"');
@@ -690,10 +727,7 @@ void main(List<String> args) async {
       for (var prop in component.props) {
         var propName = prop.name;
         if (component.model?.prop == propName) {
-          var event = component.model.event;
-          output.writeln('  :$propName="$propName"');
-          output.writeln(
-            '''  @$event="forward('$event', Array.prototype.slice.call(arguments))"''');
+          output.writeln('  v-model="_${propName}Model"');
         } else {
           output.writeln('  :$propName="$propName"');
         }
@@ -704,7 +738,8 @@ void main(List<String> args) async {
       }
 
       for (var event in component.events ?? []) {
-        output.writeln('''  @$event="\$emit('$event')"''');
+        var arg = event.type != null ? 'arguments[0]' : 'null';
+        output.writeln('''  @${event.name}="_${event.name}Emit($arg)"''');
       }
 
       output.writeln('>');
@@ -721,12 +756,55 @@ void main(List<String> args) async {
 
       output.writeln("</m-$name>''')");
       output.writeln('class $cls extends VueComponentBase with BaseMixin {');
+
+      for (var event in component.events) {
+        var type = event.type ?? 'void';
+
+        output.write('  static final ${event.name} = ');
+        output.writeln("VueEventSpec<$type>('${event.name}');");
+        output.writeln('  VueEventSink<$type> ${event.name}Sink;');
+        output.writeln('  VueEventStream<$type> ${event.name}Stream;');
+      }
+
+      if (component.model != null) {
+        var prop = component.props.firstWhere((prop) => component.model.prop == prop.name,
+                                              orElse: () => null);
+        if (prop == null) {
+          print('[Missing prop]: ${component.model.prop}');
+          continue;
+        }
+
+        output.write('  static final ${component.model.event} = ');
+        output.writeln("VueEventSpec<${prop.type}>('${component.model.event}');");
+        output.writeln('  VueEventSink<${prop.type}> ${component.model.event}Sink;');
+        output.writeln('  VueEventStream<${prop.type}> ${component.model.event}Stream;');
+      }
+
       output.writeln('  $cls() { _initialize(); }');
+
+      output.writeln('  @override');
+      output.writeln('  void lifecycleCreated() {');
+      for (var event in component.events) {
+        output.writeln('    ${event.name}Sink = $cls.${event.name}.createSink(this);');
+        output.writeln('    ${event.name}Stream = $cls.${event.name}.createStream(this);');
+      }
+
+      if (component.model != null) {
+        var event = component.model.event;
+        output.writeln('    ${event}Sink = $cls.${event}.createSink(this);');
+        output.writeln('    ${event}Stream = $cls.${event}.createStream(this);');
+      }
+
+      output.writeln('  }');
 
       output.writeln('  @ref');
       output.writeln('  dynamic inner;');
 
       for (var prop in component.props) {
+        if (component.model?.prop == prop.name) {
+          output.writeln("  @model(event: '${component.model.event}')");
+        }
+
         output.writeln('  @prop');
         output.write('  ${prop.type} ${prop.name}');
         if (prop.value != null) {
@@ -755,6 +833,22 @@ void main(List<String> args) async {
           output.write('a$i, ');
         }
         output.writeln(']);');
+      }
+
+      if (component.model != null) {
+        output.writeln('  @computed');
+        output.writeln('  get _${component.model.prop}Model => ${component.model.prop};');
+        output.writeln('  @computed');
+        output.write('  set _${component.model.prop}Model(value) =>');
+        output.writeln(' ${component.model.event}Sink.add(value);');
+      }
+
+      for (var event in component.events) {
+        var argdecl = event.type != null ? 'arg' : '';
+        var arg = event.type != null ? 'arg' : 'null';
+
+        output.writeln('  @method');
+        output.writeln('  _${event.name}Emit($argdecl) => ${event.name}Sink.add($arg);');
       }
 
       output.writeln('}');

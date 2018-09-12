@@ -1,5 +1,5 @@
 import 'package:vue/vue.dart';
-import '../component.vue.dart';
+import '../component.template.dart';
 
 bool _initialized = false;
 void _initialize() {
@@ -153,22 +153,30 @@ void _initialize() {
   _initialized = true;
 }
 
-@VueComponent(mixins: const [BaseMixin], template: r'''
+@VueComponent(template: r'''
 <m-radio
   v-on="$listeners"
   :theming="theming"
   ref="inner"
-  :checked="checked"
-  @change="forward('change', Array.prototype.slice.call(arguments))"
+  v-model="_checkedModel"
   :disabled="disabled"
   :value="value"
   :name="name"
 >
 </m-radio>''')
 class MRadio extends VueComponentBase with BaseMixin {
+  static final change = VueEventSpec<bool>('change');
+  VueEventSink<bool> changeSink;
+  VueEventStream<bool> changeStream;
   MRadio() { _initialize(); }
+  @override
+  void lifecycleCreated() {
+    changeSink = MRadio.change.createSink(this);
+    changeStream = MRadio.change.createStream(this);
+  }
   @ref
   dynamic inner;
+  @model(event: 'change')
   @prop
   bool checked = false;
   @prop
@@ -177,4 +185,8 @@ class MRadio extends VueComponentBase with BaseMixin {
   String value = '';
   @prop
   String name = '';
+  @computed
+  get _checkedModel => checked;
+  @computed
+  set _checkedModel(value) => changeSink.add(value);
 }
