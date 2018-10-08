@@ -1,1 +1,1 @@
-export 'generated/all.template.dart';
+export 'generated/all.dart';

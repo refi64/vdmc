@@ -19,6 +19,8 @@ abstract class BaseMixin implements VueMixinRequirements {
 @JS('window')
 external dynamic get _window;
 
+@JS('define')
+external dynamic get _define;
 @JS('define.amd')
 external dynamic get _amd;
 @JS('define.amd')
@@ -29,10 +31,17 @@ external void _eval(dynamic scope, String code);
 
 void eval(String code) {
   // Prevent Webpack from assigning itself to an AMD module under DDC.
-  var origAmd = _amd;
-  _amd = null;
+  var origAmd;
+  if (_define != null) {
+    var origAmd = _amd;
+    _amd = null;
+  }
+
   _eval(_window, code);
-  _amd = origAmd;
+
+  if (_define != null) {
+    _amd = origAmd;
+  }
 }
 
 StyleElement _styleElement = null;

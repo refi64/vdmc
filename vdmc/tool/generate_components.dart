@@ -672,8 +672,8 @@ void main(List<String> args) async {
   for (var module in modules.keys) {
     var snakeCase = module.replaceAll('-', '_');
 
-    all.writeln("import '$snakeCase.template.dart';");
-    all.writeln("export '$snakeCase.template.dart';");
+    all.writeln("import '$snakeCase.dart';");
+    all.writeln("export '$snakeCase.dart';");
 
     if (args.isNotEmpty && !args.contains(module)) {
       continue;
@@ -683,7 +683,7 @@ void main(List<String> args) async {
     print('$module:');
 
     output.writeln("import 'package:vue/vue.dart';");
-    output.writeln("import '../component.template.dart';");
+    output.writeln("import '../component.dart';");
 
     for (var component in modules[module]) {
       for (var imp in component.imports) {

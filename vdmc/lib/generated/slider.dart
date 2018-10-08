@@ -1,5 +1,5 @@
 import 'package:vue/vue.dart';
-import '../component.template.dart';
+import '../component.dart';
 
 bool _initialized = false;
 void _initialize() {

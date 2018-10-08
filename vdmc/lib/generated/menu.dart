@@ -1,5 +1,5 @@
 import 'package:vue/vue.dart';
-import '../component.template.dart';
+import '../component.dart';
 import 'dart:html';
 
 bool _initialized = false;
